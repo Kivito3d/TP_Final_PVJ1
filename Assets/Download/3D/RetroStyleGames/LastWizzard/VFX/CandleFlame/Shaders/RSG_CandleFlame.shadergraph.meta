@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 4729e1e12c0a5b66871073f63e33c8ff
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 625f186215c104763be7675aa2d941aa, type: 3}
+AssetOrigin:
+  serializedVersion: 1
+  productId: 425030
+  packageName: Last Wizard FREE - Stylized Castle Room with Rigged Knight and Fireplace
+  packageVersion: 1.0
+  assetPath: Assets/RetroStyleGames/LastWizzard/VFX/CandleFlame/Shaders/RSG_CandleFlame.shadergraph
+  uploadId: 1039486
