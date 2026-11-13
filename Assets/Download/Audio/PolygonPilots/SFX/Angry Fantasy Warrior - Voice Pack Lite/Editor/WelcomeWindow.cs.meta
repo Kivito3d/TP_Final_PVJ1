@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d443a3406d2b64e4f9d3c4158d69d5b4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 421378
+  packageName: "Angry Barbarian Voice Pack Lite \u2013 Free Combat Sounds"
+  packageVersion: 1.0
+  assetPath: Assets/PolygonPilots/SFX/Angry Fantasy Warrior - Voice Pack Lite/Editor/WelcomeWindow.cs
+  uploadId: 1029646

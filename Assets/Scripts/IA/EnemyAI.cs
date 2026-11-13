@@ -26,12 +26,14 @@ public class EnemyAI : MonoBehaviour
     private NavMeshAgent agent;
     private Transform playerTransform;
     private HealthSystem healthSystemPlayer;
+    private Animator animator;
     private Attack attack;
     private bool isStunned;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
         attack = GetComponent<Attack>();
         
     }
@@ -60,6 +62,7 @@ public class EnemyAI : MonoBehaviour
         if (isStunned || playerTransform == null || (healthSystemPlayer != null && healthSystemPlayer.IsDead))
         {
             agent.isStopped = true;
+            UpdateAnimationSpeed();
             return;
         }
 
@@ -79,6 +82,14 @@ public class EnemyAI : MonoBehaviour
                 UpdateAttackState(distanceToPlayer);
                 break;
         }
+        UpdateAnimationSpeed();
+    }
+
+    private void UpdateAnimationSpeed()
+    {
+        if (animator == null || agent == null) return;
+        float speed = agent.velocity.magnitude;
+        animator.SetFloat("Speed", speed);
     }
 
     private void UpdatePatrolState(float distanceToPlayer)
@@ -142,7 +153,6 @@ public class EnemyAI : MonoBehaviour
     {
         isAttacking = true;
         agent.isStopped = true;
-        Debug.Log("Entro");
         ExecuteAttack();
         yield return new WaitForSeconds(attackCooldown);
         isAttacking = false;
@@ -194,23 +204,6 @@ public class EnemyAI : MonoBehaviour
 
 
 
-    public void Stun(float duration)
-    {
-        StartCoroutine(StunRoutine(duration));
-    }
-
-    private IEnumerator StunRoutine(float duration)
-    {
-        isStunned = true;
-        agent.isStopped = true;
-        Debug.Log($"Aturdido por {duration} segundos");
-
-        yield return new WaitForSeconds(duration);
-
-        isStunned = false;
-        agent.isStopped = false;
-        Debug.Log("Recuperado del aturdimiento");
-    }
 
 
 

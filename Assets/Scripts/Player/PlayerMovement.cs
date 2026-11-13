@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
     [Header ("Movement Settings")]
     [SerializeField] private float speed;
 
+    [SerializeField] private PlayerStats stats;
     public float Speed
     {
         get { return speed; }
@@ -30,25 +31,45 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private LayerMask groundLayer;
 
-    private GameManager gm;
-    void Start()
+    [Header ("Animation Settings")]
+
+    private Animator animator;
+    private static readonly int SpeedHash = Animator.StringToHash("Speed");
+    private static readonly int GroundedHash = Animator.StringToHash("IsGrounded");
+    private static readonly int JumpHash = Animator.StringToHash("Jump");
+
+
+    void Awake()
     {
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
-        
-   
-            moveHorizontal = Input.GetAxis("Horizontal");
-            moveVertical = Input.GetAxis("Vertical");
+        //
 
-            CheckGround();
 
-            if (Input.GetButtonDown("Jump") && isGrounded)
-            {
-                rb.AddForce(new Vector3(0, jumpForce, 0));
-            }
+        moveHorizontal = Input.GetAxis("Horizontal");
+        moveVertical = Input.GetAxis("Vertical");
+
+        speed = Input.GetKey(KeyCode.LeftShift) ? stats.runSpeed : stats.walkSpeed;
+
+        CheckGround();
+
+        Vector2 inputDir = new Vector2(moveHorizontal, moveVertical);
+
+        animator.SetFloat(SpeedHash, inputDir.magnitude * speed);
+
+
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            rb.AddForce(new Vector3(0, jumpForce, 0));
+            animator.SetTrigger(JumpHash);
+            //animator.SetTrigger("Jump");
+
+        }
+
 
     }
 
@@ -64,6 +85,8 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = Physics.Raycast(origin, Vector3.down, rayDistance, groundLayer);
 
         Color ColorRay = isGrounded ? Color.green : Color.red;
+
+        animator.SetBool(GroundedHash,isGrounded);
 
         Debug.DrawRay(origin,Vector3.down*rayDistance,ColorRay);
     }

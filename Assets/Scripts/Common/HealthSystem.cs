@@ -9,7 +9,7 @@ public class HealthSystem : MonoBehaviour
 
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private EnemyStats enemyStats;
-
+    [SerializeField] private float deathTimeAnimation = 2.8f;
 
     [SerializeField] private bool isDead;
     public bool IsDead
@@ -25,10 +25,11 @@ public class HealthSystem : MonoBehaviour
     private Attack attack;
     private MeshRenderer mesh;
 
+    private Animator animator;
+
     public event Action<float> OnChangeHealthPlayer;
     private void Awake() 
     { 
-        //currentHealth = maxHealth; 
         isDead = false; 
         playerStats.ResetStats();
         enemyStats.ResetStats();
@@ -36,11 +37,13 @@ public class HealthSystem : MonoBehaviour
         col = GetComponent<Collider>();
         attack = GetComponent<Attack>();
         mesh = GetComponent<MeshRenderer>();
+        animator = GetComponent<Animator>();
     }
     public void TakeDamage(float amount)
     {
         if (isDead) return;
 
+        animator.SetTrigger("GetHit");
         if (gameObject.CompareTag("Player"))
         {
             playerStats.currentHealth -= amount;
@@ -49,6 +52,7 @@ public class HealthSystem : MonoBehaviour
             if (playerStats.currentHealth <= 0f)
             {
                 Dead();
+                return;
             }
         }
 
@@ -59,6 +63,7 @@ public class HealthSystem : MonoBehaviour
             if (enemyStats.currentHealth <= 0f)
             {
                 Dead();
+                return;
             }
         }
 
@@ -68,7 +73,7 @@ public class HealthSystem : MonoBehaviour
     { 
         isDead = true;
 
-        //agregar condicional comparando tags player y character, notificar al gameManager
+        animator.SetTrigger("Death");
 
         if (gameObject.CompareTag("Player"))
         {
@@ -79,31 +84,26 @@ public class HealthSystem : MonoBehaviour
             GameManager.Instance.NotifyEnemyDefeat();
         }
 
-        vfx.SetActive(true);
-        //activar vfx
+        //vfx.SetActive(true);
         StartCoroutine(DestroyTransition());
-        //iniciar Corrutina
 
 
-        Debug.Log("Character eliminado"); 
-        // Notificación al GameManager si existiera 
-        //GameManager.Instance.ChangeState(GameState.GameOver);
-        //Destroy object
-        //efectos
-        //animaciones
+        //Debug.Log("Character eliminado"); 
+
     }
 
     IEnumerator DestroyTransition()
     {
+        //reproducir animacion
         col.enabled = false;
         rb.isKinematic = true;
-        mesh.enabled = false;
+        
         attack.enabled = false;
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(deathTimeAnimation);
+        mesh.enabled = false;
 
         Destroy(this.gameObject);
     }
-    //crear corrutina deshabilitando componentes y destruyendo el objeto
 
 }

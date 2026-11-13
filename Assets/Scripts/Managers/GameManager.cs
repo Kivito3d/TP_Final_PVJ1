@@ -10,6 +10,7 @@ public enum GameState
     Paused,
     Victory,
     GameOver,
+    ChangeScene,
 }
 public class GameManager : MonoBehaviour
 {

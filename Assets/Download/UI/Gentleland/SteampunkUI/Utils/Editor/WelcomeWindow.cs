@@ -5,7 +5,7 @@ using UnityEngine;
 // you can then delete GentlelandSettings folder too
 namespace Gentleland.Utils.SteampunkUI
 {
-    public class WelcomeWindow : EditorWindow
+  /*  public class WelcomeWindow : EditorWindow
     {
         const string WindowTitle = "Gentleland : " + PackageSettings.packageName;
         GUIStyle textStyle;
@@ -94,5 +94,5 @@ CEO - Gentleland"
             GUILayout.EndArea();
         }
 
-    }
+    }*/
 }
